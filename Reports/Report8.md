@@ -2,12 +2,12 @@
 
 ## ML
 
-After Sebastians suggestion we choose to use Pytourch for our ML framework. All group members read the tutorial for Pytourch.
+After Sebastians suggestion we choose to use Pytorch for our ML framework. All group members read the tutorial for Pytorch.
 
 
 ## Pose estimation
 
-The pose estimation used was the googles Mediapipe and Enis created a test squat video for us to see that our functions work as should. The media pipe has 33 pose landmarks and for each landmark we get the x and y cordinate for the landmark as well as z which represents the "depth with the depth at the midpoint of hips being the origin, and the smaller the value the closer the landmark is to the camera" and visibility which gives the likelihood of the landmark being visible. For each video we store all the previous data for each landmarks for each frame of the video in a json file. All features from all landmarks are stored since the neural network can "filter" out the neccecary ones for our purpose.
+The pose estimation used was the googles Mediapipe and Enis created a test squat video for us to see that our functions work as they should. Mediapipe has 33 pose landmarks and for each landmark we get the x and y cordinate as well as the z-coordinate which represents the "depth". The depth is defined such that the midpoint of the hips is the origin, and the smaller the value the closer the landmark is to the camera. We also get a visibility-value for the landmarks which gives the likelihood of the landmark being visible. For each video being managed and for each frame of the video the coordinate and visibility data for each landmark are stored in a json file. All features from all landmarks are stored right now, no matter the landmarks insignificance, this is because neural networks that we will later apply can "filter" out the neccecary ones for our purpose.
 
 In the image below we show an example of how our data is stored in our json file. 
 
