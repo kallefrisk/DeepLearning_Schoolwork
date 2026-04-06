@@ -62,7 +62,7 @@ def extract_joint_nodes(data_path: str, model_path: str):
     return {"source": data_path, "frames": results_list}
 
 
-def save_to_json(data_path: str, save_path: str, node_data: dir):
+def save_to_json(data_path: str, save_path: str, node_data: dict):
     os.makedirs(os.path.dirname(save_path), exist_ok=True)
     with open(save_path, "w") as f:
         json.dump({
