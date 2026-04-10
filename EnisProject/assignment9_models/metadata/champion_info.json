@@ -1,0 +1,16 @@
+{
+  "model_name": "model_v2",
+  "saved_at": "2026-04-10 21:21:35",
+  "mse": 0.008560383692383766,
+  "mae": 0.07551944255828857,
+  "hyperparameters": {
+    "layers": [
+      128,
+      32
+    ],
+    "activation": "ReLU",
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "epochs": 20
+  }
+}
