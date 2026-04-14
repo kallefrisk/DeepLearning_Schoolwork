@@ -8,6 +8,8 @@ import torch.nn as nn
 import torch.optim as optim
 from datetime import datetime
 import json
+import copy
+import mlflow
 from sklearn.model_selection import KFold
 from itertools import product
 from sklearn.metrics import r2_score
@@ -122,7 +124,7 @@ class ZPredictor(nn.Module):
 
 
 # Function builds a Z- predictor neural network model based on a configuration
-def build_model(config):
+def build_model(config, device):
     return ZPredictor(
         hidden_layers=config["hidden_layers"],
         activation=config["activation"],
@@ -228,7 +230,7 @@ def train_one_model(model, config, x_train, y_train, x_val, y_val, verbose=False
 
 
 # Function builds a model and has it training under k-fold cross validation
-def cross_validation(config, X, Y, k):
+def cross_validation(config, X, Y, k, device):
     kf = KFold(n_splits=k, shuffle=True, random_state=42)
     fold_scores = []
     fold_models = []
@@ -242,15 +244,15 @@ def cross_validation(config, X, Y, k):
             x_val = X[val_idx]
             y_val = Y[val_idx]
 
-            model = build_model(config)
+            model = build_model(config, device)
             model.apply(init_weights)
 
-            val_loss, best_state = train_one_model(model, config, x_train, y_train, x_val, y_val, loss_fn = nn.MSELoss())
+            results = train_one_model(model, config, x_train, y_train, x_val, y_val)
 
-            fold_scores.append(val_loss)
-            fold_models.append(best_state)
+            fold_scores.append(results["val_loss"])
+            fold_models.append(results["best_state"])
 
-            mlflow.log_metric(f"fold_{fold}_val_loss ", val_loss)
+            mlflow.log_metric(f"fold_{fold}_val_loss ", results["val_loss"])
 
         avg_loss = sum(fold_scores) / len(fold_scores)
 
