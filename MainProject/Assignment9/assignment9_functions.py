@@ -257,6 +257,9 @@ def cross_validation(config, X, Y, k, device):
         avg_loss = sum(fold_scores) / len(fold_scores)
 
         mlflow.log_metric("cv_mean_val_loss", avg_loss)
+        x = results["val_metrics"].items()
+        for metric, value in x:
+            mlflow.log_metric(metric, value)
 
     return {"cv_mean_loss": avg_loss,
             "fold_scores": fold_scores,

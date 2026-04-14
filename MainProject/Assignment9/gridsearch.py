@@ -60,12 +60,12 @@ y_test = torch.tensor(y_test.values, dtype=torch.float32).to(device)
 
 
 # Define search space 
-param_grid = {"layers": [[512, 256, 128, 64]],
-              "learning_rate": [0.0001],
-              "dropout": [0],
-              "activation": ["leaky_relu"],
-              "optimizer": ["adam"],
-              "epochs": [100],
+param_grid = {"layers": [[128, 128, 128], [128, 128], [512, 256, 128], [256, 128, 64], [512, 256, 128, 64]],
+              "learning_rate": [0.001, 0.0005, 0.0001],
+              "dropout": [0, 0.1, 0.2],
+              "activation": ["relu", "leaky_relu", "tanh", "gelu"],
+              "optimizer": ["adam", "rmsprop", "sgd"],
+              "epochs": [100, 200, 500],
               "patience": [5]
               }
 
