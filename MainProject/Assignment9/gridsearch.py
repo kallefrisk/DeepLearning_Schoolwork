@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 import mlflow
 from itertools import product
-from assignment9_functions import split_csvfiles, load, input_target_split, cross_validation, build_model, train_one_model, save_champion_model
+from assignment9_functions import split_csvfiles, load, input_target_split, cross_validation, build_model, train_one_model, save_champion_model, update_champion
 
 print()
 
@@ -44,10 +44,8 @@ x_test, y_test = input_target_split(test_data)
 
 
 # Define paths
-model_dir = "MainProject/models"
-candidates_dir = os.path.join(model_dir, "candidates")
-champion_dir = os.path.join(model_dir, "champion")
-metadata_dir = os.path.join(model_dir, "metadata")
+champion_dir = "MainProject/models/champion"
+metadata_dir = "MainProject/models/metadata"
 
 
 # Convert data to tensors
@@ -59,8 +57,8 @@ X_test = torch.tensor(x_test.values, dtype=torch.float32).to(device)
 y_test = torch.tensor(y_test.values, dtype=torch.float32).to(device)
 
 
-# Define search space 
-param_grid = {"layers": [[128, 128, 128], [128, 128], [512, 256, 128], [256, 128, 64], [512, 256, 128, 64]],
+# Define search space
+param_grid = {"hidden_layers": [[128, 128, 128], [128, 128], [512, 256, 128], [256, 128, 64], [512, 256, 128, 64]],
               "learning_rate": [0.001, 0.0005, 0.0001],
               "dropout": [0, 0.1, 0.2],
               "activation": ["relu", "leaky_relu", "tanh", "gelu"],
@@ -75,8 +73,20 @@ trial = 0
 best_score = float("inf")
 best_config = None
 
-for values in product(param_grid["layers"], param_grid["learning_rate"], param_grid["dropout"], param_grid["activation"], param_grid["optimizer"], param_grid["epochs"], param_grid["patience"]):
-    config = {"hidden_layers": values[0], "learning_rate": values[1], "dropout": values[2], "activation": values[3], "optimizer": values[4], "epochs": values[5], "patience": values[6]}
+for values in product(param_grid["hidden_layers"], param_grid["learning_rate"],
+                      param_grid["dropout"], param_grid["activation"],
+                      param_grid["optimizer"], param_grid["epochs"],
+                      param_grid["patience"]):
+
+    config = {
+        "hidden_layers": values[0],
+        "learning_rate": values[1],
+        "dropout": values[2],
+        "activation": values[3],
+        "optimizer": values[4],
+        "epochs": values[5],
+        "patience": values[6]
+    }
 
     print(f"\nTrial {trial}")
     print(config)
@@ -89,36 +99,11 @@ for values in product(param_grid["layers"], param_grid["learning_rate"], param_g
     if cv_score < best_score:
         best_score = cv_score
         best_config = config
+        best_model = build_model(best_config, device)
+        best_model.load_state_dict(results["best_state"])
+        update_champion(best_model, "BATMAN", results["metrics"]["mse"], results["metrics"]["mae"], best_config, champion_dir, metadata_dir)
 
     trial += 1
 
 
 print(f"\nBest configuration: {best_config}")
-best_model = build_model(best_config, device)
-
-# Retrain best_model on training
-results = train_one_model(best_model, best_config, X_train, y_train, X_train, y_train)
-
-best_model.load_state_dict(results["best_state"])
-save_champion_model(best_model, "champion", results["val_metrics"]["mse"], results["val_metrics"]["mae"], best_config, champion_dir, metadata_dir)
-
-
-# Evaluate model performance on training data
-best_model.eval()
-with torch.no_grad():
-    train_predictions = best_model(X_train)
-    train_mse = torch.mean((train_predictions - y_train) ** 2)
-    train_mae = torch.mean(torch.abs(train_predictions - y_train))
-
-
-print(f"Train mse: {train_mse.item()}")
-
-
-# Evaluate model performance on test data
-with torch.no_grad():
-    test_predictions = best_model(X_test)
-    test_mse = torch.mean((test_predictions - y_test) ** 2)
-    test_mae = torch.mean(torch.abs(test_predictions - y_test))
-
-
-print(f"Test mse: {test_mse.item()}\n")

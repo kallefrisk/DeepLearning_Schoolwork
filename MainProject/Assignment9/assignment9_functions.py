@@ -234,6 +234,7 @@ def cross_validation(config, X, Y, k, device):
     kf = KFold(n_splits=k, shuffle=True, random_state=42)
     fold_scores = []
     fold_models = []
+    best_fold_score = np.inf
 
     with mlflow.start_run():
 
@@ -248,6 +249,9 @@ def cross_validation(config, X, Y, k, device):
             model.apply(init_weights)
 
             results = train_one_model(model, config, x_train, y_train, x_val, y_val)
+
+            if results["val_loss"] < best_fold_score:
+                best_state = results["best_state"]
 
             fold_scores.append(results["val_loss"])
             fold_models.append(results["best_state"])
@@ -264,6 +268,7 @@ def cross_validation(config, X, Y, k, device):
     return {"cv_mean_loss": avg_loss,
             "fold_scores": fold_scores,
             "fold_models": fold_models,
+            "best_state": best_state,
             "metrics": results["val_metrics"]}
 
 
