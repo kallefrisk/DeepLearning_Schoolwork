@@ -3,8 +3,9 @@ import torch
 import torch.nn as nn
 import mlflow
 from itertools import product
-from assignment9_functions import split_csvfiles, load, input_target_split, cross_validation, build_model, train_one_model
+from assignment9_functions import split_csvfiles, load, input_target_split, cross_validation, build_model, train_one_model, save_champion_model
 
+print()
 
 if torch.backends.mps.is_available():
     device = torch.device("mps")      # Mac GPU (Apple Silicon)
@@ -34,7 +35,7 @@ train_files, test_files = split_csvfiles(datafolder, random_seed, 0.9, 0)
 train_data = load(train_files, datafolder)
 test_data = load(test_files, datafolder)
 
-print(train_data.columns.tolist())
+# print(train_data.columns.tolist())
 
 
 x_train, y_train = input_target_split(train_data)
@@ -43,7 +44,7 @@ x_test, y_test = input_target_split(test_data)
 
 
 # Define paths
-model_dir = "../assignment9_models"
+model_dir = "MainProject/models"
 candidates_dir = os.path.join(model_dir, "candidates")
 champion_dir = os.path.join(model_dir, "champion")
 metadata_dir = os.path.join(model_dir, "metadata")
@@ -92,13 +93,14 @@ for values in product(param_grid["layers"], param_grid["learning_rate"], param_g
     trial += 1
 
 
-print(best_config)
+print(f"\nBest configuration: {best_config}")
 best_model = build_model(best_config, device)
 
 # Retrain best_model on training
 results = train_one_model(best_model, best_config, X_train, y_train, X_train, y_train)
 
 best_model.load_state_dict(results["best_state"])
+save_champion_model(best_model, "champion", results["val_metrics"]["mse"], results["val_metrics"]["mae"], best_config, champion_dir, metadata_dir)
 
 
 # Evaluate model performance on training data
@@ -119,4 +121,4 @@ with torch.no_grad():
     test_mae = torch.mean(torch.abs(test_predictions - y_test))
 
 
-print(f"Test mse: {test_mse.item()}")
+print(f"Test mse: {test_mse.item()}\n")

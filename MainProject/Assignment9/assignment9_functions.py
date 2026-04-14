@@ -260,7 +260,8 @@ def cross_validation(config, X, Y, k, device):
 
     return {"cv_mean_loss": avg_loss,
             "fold_scores": fold_scores,
-            "fold_models": fold_models}
+            "fold_models": fold_models,
+            "metrics": results["val_metrics"]}
 
 
 # Function saves a candidate model into given folder
