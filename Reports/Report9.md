@@ -8,13 +8,13 @@
 
 The first step was loading the data, which was a relatively straightforward task. The dataset consisted of time-series pose estimation data from Kinect sensors, containing 13 joints with x and y coordinates (26 features total) as input, with the target being the next frame's joint positions (13 coordinates). Each file represented one complete squat sequence, with varying lengths across different recordings. In order to train and evaluate our models without look-ahead bias we split the files into groups of training- and tesfiles, the split was made such that 90 percent of files became trainingfiles while the remaining 10 percent became testfiles. First we also included a set of validationfiles, forming 10% of all the datafiles such that the proprtions were 80/10/10 but later on we realized that k-fold cross validation made the validation set useless from which we decided on the 90/10 split. 
 
-### Training
-For training the models we used
 
 ### Experiment Tracking with MLflow
 
 The next step was setting up MLflow to log all runs, experiments, and model artifacts. Without this, it would have been impossible to systematically compare different hyperparameter configurations and track model performance over time.
 
+### Training
+Before we could start to train models on our data we created a general model using pytorch's neural network library, we specified the model's input and output dimensions since we knew these from the datasets, aswell as it's initial weights which we chose from some research, but the rest of the model we kept general such that we could modify it smoothly in the quest of optimizing it's performance. To optimize the model's performance all of us ran grid search locally on our computers, using mlflow we could smoothly log both configurations and the corresponding performance metrics for each model. Our assessment of models skill depended mostly on the mse values we got from predictions on validation data. We chose mse because we needed an evaluation metric suitable for regression and it penalizes outliers more than for example mae which feels desirable in our setting of tracking z-coordinates. Training in this manner, using different grids we all got ourselves a champion model and from these we chose the best one.
 
 ### Hyperparameters
 
@@ -32,7 +32,6 @@ The next step was setting up MLflow to log all runs, experiments, and model arti
 **Learning Rate:** Learning rates of 0.0005 and 0.001 were tested, but no significant difference was observed.
 
 
-
 **Early Stopping Patience:** This was implemented to stop training when validation loss stopped improving, preventing overfitting. 
 
 ### Errors 
@@ -43,6 +42,8 @@ The next step was setting up MLflow to log all runs, experiments, and model arti
 ### Future works
 
 - **Domain Adaptation:** Possibility to transform Google MediaPipe pose estimations to Kinect-style data.
+
+- **Coordination:** For upcoming tasks we will consider how to organize and distribute the work among ourselves to become more time-efficient as a group.
 
 
 
