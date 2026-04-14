@@ -6,17 +6,22 @@
 
 ### Data Loading & Preprocessing
 
-The first step was loading the data, which was a relatively straightforward task. The dataset consisted of time-series pose estimation data from Kinect sensors, containing 13 joints with x and y coordinates (26 features total) as input, with the target being the next frame's joint positions (13 coordinates). Each file represented one complete squat sequence, with varying lengths across different recordings.
+The first step was loading the data, which was a relatively straightforward task. The dataset consisted of time-series pose estimation data from Kinect sensors, containing 13 joints with x and y coordinates (26 features total) as input, with the target being the next frame's joint positions (13 coordinates). Each file represented one complete squat sequence, with varying lengths across different recordings. In order to train and evaluate our models without look-ahead bias we split the files into groups of training- and tesfiles, the split was made such that 90 percent of files became trainingfiles while the remaining 10 percent became testfiles. First we also included a set of validationfiles, forming 10% of all the datafiles such that the proprtions were 80/10/10 but later on we realized that k-fold cross validation made the validation set useless from which we decided on the 90/10 split. 
+
+### Training
+For training the models we used
 
 ### Experiment Tracking with MLflow
 
 The next step was setting up MLflow to log all runs, experiments, and model artifacts. Without this, it would have been impossible to systematically compare different hyperparameter configurations and track model performance over time.
 
+
 ### Hyperparameters
 
-**Activation Functions:** ReLU and Leaky ReLU were tested. According to literature, ReLU is the recommended default choice, so this was used consistently.
+**Activation Functions:** ReLU, Leaky ReLU, tanh and gelu were tested within our gridsearch. According to literature, ReLU is the recommended default choice and in accordance with this it was our most succesful activation function.
 
-**Optimizer:** Adam was used most of the time because, as with ReLU, it is widely regarded as the best default optimizer for most deep learning tasks.
+**Optimizer:** Regarding optimizers we tried both Adam, rmsprop and sgd, the results were quite similar for them all but the one we got the best model using was rmsprop.
+
 
 **Network Architecture:** The size and number of hidden layers were the most critical hyperparameters. Configurations tested included [256,128,128,64,64] (5 layers), [256,128,128,64] (4 layers), [256,128,64] (3 layers), and [128,64] (2 layers) with more. LSTM, GRU, and Dense architectures were compared.
 
