@@ -1,16 +1,19 @@
 {
-  "model_name": "model_v2",
-  "saved_at": "2026-04-10 21:21:35",
-  "mse": 0.008560383692383766,
-  "mae": 0.07551944255828857,
+  "model_name": "assignment9_best_model",
+  "saved_at": "2026-04-14 09:10:55",
+  "mse": 0.004888102412223816,
+  "mae": 0.04910099878907204,
   "hyperparameters": {
-    "layers": [
-      128,
-      32
+    "hidden_layers": [
+      512,
+      256,
+      128
     ],
-    "activation": "ReLU",
-    "optimizer": "Adam",
     "learning_rate": 0.001,
-    "epochs": 20
+    "dropout": 0.0,
+    "activation": "leaky_relu",
+    "optimizer": "adam",
+    "epochs": 100,
+    "patience": 10
   }
 }
