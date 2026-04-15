@@ -2,8 +2,6 @@
 
 ## ML
 
-### Optimal model
-
 ### Data Loading & Preprocessing
 
 The first step was loading the data, which was a relatively straightforward task. The dataset consisted of time-series pose estimation data from Kinect sensors, containing 13 joints with x and y coordinates (26 features total) as input, with the target being the next frame's joint positions (13 coordinates). Each file represented one complete squat sequence, with varying lengths across different recordings. In order to train and evaluate our models without look-ahead bias we split the files into groups of training- and tesfiles, the split was made such that 90 percent of files became trainingfiles while the remaining 10 percent became testfiles. First we also included a set of validationfiles, forming 10% of all the datafiles such that the proprtions were 80/10/10 but later on we realized that k-fold cross validation made the validation set useless from which we decided on the 90/10 split. 
@@ -61,7 +59,7 @@ If a new model performs better than the current champion, it replaces it. We als
 
 Overall, this makes the system easy to use, update, and improve without needing a lot of manual work.
 
-## Best model we found
+## Champion Model (as of now)
 ### Config
 
 ### Metrics
