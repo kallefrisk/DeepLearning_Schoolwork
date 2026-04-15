@@ -60,3 +60,8 @@ We also created a system to keep track of the best model, called the champion mo
 If a new model performs better than the current champion, it replaces it. We also save information about the model, such as its parameters and performance in the folder metadata. This makes it possible to always go back and use the best model.
 
 Overall, this makes the system easy to use, update, and improve without needing a lot of manual work.
+
+## Best model we found
+### Config
+
+### Metrics
