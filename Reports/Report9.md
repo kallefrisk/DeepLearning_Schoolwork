@@ -60,6 +60,44 @@ If a new model performs better than the current champion, it replaces it. We als
 Overall, this makes the system easy to use, update, and improve without needing a lot of manual work.
 
 ## Champion Model (as of now)
-### Config
+### Configuration
+**Hidden layers and layer widths:** [512, 256, 128, 64]
+
+**Learning rate:** 0.0001
+
+**Dropout:** 0
+
+**Activation:** leaky_relu
+
+**Optimizer:** Adam
+
+**Epochs:** 100
+
+**Patience:** 5
 
 ### Metrics
+
+| Metric | Train | Test |
+|------|------|------|
+| MSE | 0.006831 | 0.007428 |
+| MAE | 0.062108 | 0.067265 |
+| R2  | 0.308607 | 0.125973 |
+| Bias| -0.001282| 0.006515 |
+
+
+### Joint accuracy
+| Joint | MAE |
+|-------|-----|
+|head   |0.066032 |
+|left_shoulder|0.062770 |
+|left_elbow|0.058453 |
+|right_shoulder|0.064571|
+|right_elbow|0.074379 |
+|left_hand|0.076375 |
+|right_hand|0.094182 |
+|left_hip|0.069719 |
+|right_hip|0.076804 |
+|left_knee|0.056279 |
+|right_knee|0.063206 |
+|left_foot|0.059430 |
+|right_foot|0.052247 |
