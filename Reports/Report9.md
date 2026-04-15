@@ -131,3 +131,8 @@ Average MAE:  4.791995 cm
 
 
 ### Learning curves
+
+![Learning curve for MAE](images/train_mae_curve.png)
+
+
+![Learning curve for LOSS (MSE)](images/train_loss_curve.png)
