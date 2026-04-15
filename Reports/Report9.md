@@ -70,58 +70,64 @@ Overall, this makes the system easy to use, update, and improve without needing 
 ### Configuration
 
 
-**Hidden layers and layer widths:** [256, 128, 128, 64, 64] Dense
+**Hidden layers and layer widths:** [256, 128, 64] Dense
 
-**Learning rate:** 0.0005
+**Learning rate:** 0.001
 
 **Dropout:** 0
 
-**Activation:** ReLU()
+**Activation:** relu
 
 **Optimizer:** Adam
 
-**Epochs:** 100
+**Epochs:** 500
 
-**Patience:** 0
-
-**batch_size:** 64
+**Patience:** 5
 
 
 ### Metrics
 
 
-| Metric | Train | Test |
-|------|------|------|
-| MSE | 0.001342 | 0.00219  |
-| MAE | 0.018342 | 0.025069 |
-| R2  | 0.857105 | 0.83527  |
+| Metric |  Train   |   Test   |
+|-----   |----------|----------|
+|  MSE   | 0.002057 | 0.004530 |
+|  MAE   | 0.033828 | 0.047920 |
+|  R2    | 0.779359 | 0.455292 |
+|  Bias  | 0.000841 | 0.018974 |
+
+
 
 
 ### Joint accuracy
-MAE per joint:
+MAE per joint: 
 
-head: 0.049005  
+head: 4.608358 cm 
 
-left_shoulder: 0.042374 
+left_shoulder: 4.477446 cm
 
-left_elbow: 0.047464    
+left_elbow: 4.969401 cm
 
-right_shoulder: 0.047557
+right_shoulder: 4.450579 cm
 
-right_elbow: 0.057517
+right_elbow: 5.944175 cm
 
-left_hand: 0.054553
+left_hand: 5.893731 cm
 
-right_hand: 0.063952
+right_hand: 6.237015 cm
 
-left_hip: 0.042433
+left_hip: 3.857303 cm
 
-right_hip: 0.043787
+right_hip: 3.846220 cm
 
-left_knee: 0.041827
+left_knee: 4.268326 cm
 
-right_knee: 0.052065
+right_knee: 5.296071 cm
 
-left_foot: 0.041921
+left_foot: 3.914719 cm
 
-right_foot: 0.048905
+right_foot: 4.532589 cm
+
+Average MAE:  4.791995 cm
+
+
+### Learning curves
