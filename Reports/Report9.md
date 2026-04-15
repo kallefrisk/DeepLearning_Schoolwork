@@ -18,9 +18,9 @@ Before we could start to train models on our data we created a general model usi
 
 ### Hyperparameters
 
-**Activation Functions:** ReLU, Leaky ReLU, tanh and gelu were tested within our gridsearch. According to literature, ReLU is the recommended default choice and in accordance with this it was our most succesful activation function.
+**Activation Functions:** ReLU, Leaky ReLU, tanh and gelu were tested within our gridsearch. According to literature, ReLU is the recommended default choice and in accordance with this it appeared frequently in our most sucessful models.
 
-**Optimizer:** Regarding optimizers we tried both Adam, rmsprop and sgd, the results were quite similar for them all but the one we got the best model using was rmsprop.
+**Optimizer:** Regarding optimizers we tried both Adam, rmsprop and sgd, the results were quite similar for all of them.
 
 
 **Network Architecture:** The size and number of hidden layers were the most critical hyperparameters. Configurations tested included [256,128,128,64,64] (5 layers), [256,128,128,64] (4 layers), [256,128,64] (3 layers), and [128,64] (2 layers) with more. LSTM, GRU, and Dense architectures were compared.
