@@ -39,17 +39,13 @@ Before we could start to train models on our data we created a general model usi
 
 ### Future works
 
-- **Domain Adaptation:** Possibility to transform Google MediaPipe pose estimations to Kinect-style data.
+- **Domain Adaptation:** We will explore the possibility to transform Google MediaPipe pose estimations to Kinect-style data.
 
 - **Coordination:** For upcoming tasks we will consider how to organize and distribute the work among ourselves to become more time-efficient as a group.
 
-- **Frames** 
+- **Further data preprocessing:** To further improve model performance, we will explore preprocessing and data augmentation techniques that make the movement data more informative for the models. One such technique could be to normalize the data such that all squats are interpreted as equally far away from the camera and such that coordinates are similarily scaled.
 
-- **Augment data**
-
-- **Normilising data**
-
-- **Increase K possibly**
+- **Increase number of folds in CV:** Until now we have only used k= 5 folds but going forward we will examine if increasing k can give us models with better generalization.
 
 
 ## Software Development
