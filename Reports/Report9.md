@@ -51,11 +51,11 @@ Before we could start to train models on our data we created a general model usi
 
 To make the model easy to train again and reuse, we created a clear and structured workflow.
 
-The training is controlled by a dictionary of hyperparameters. This means we can change things like the model size or learning rate without changing the actual code. Because of this, it is easy to train the model again with new data or different parameters.
+The training is controlled by a dictionary of hyperparameters. This means we can change things like the amount of layers, layer-width or learning rate without changing the actual code. Because of this, it is easy to train the model again with new data or different parameters.
 
-Every trained model can be saved to a file in a folder candidates. This means we do not need to train the model again every time we want to use it. We do not use this at the moment.
+Every trained model can be saved to a file in a folder candidates. This means we do not need to train the model again every time we want to use it. We do not use this at the moment however but this is just due to that we have the system below, that tracks the so far best model, ehich we are more interested in than the less sucessful models.
 
-We also created a system to keep track of the best model, called the champion model. The best model is chosen based on how well it performs on validation data (using mean absolute error). It is also saved in a folder called champion.
+We also created a system to keep track of the best model, called the champion model. The best model is chosen based on how well it performs on validation data (using mean squared error). It is also saved in a folder called champion.
 
 If a new model performs better than the current champion, it replaces it. We also save information about the model, such as its parameters and performance in the folder metadata. This makes it possible to always go back and use the best model.
 
