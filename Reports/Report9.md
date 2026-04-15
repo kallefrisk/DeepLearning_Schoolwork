@@ -43,6 +43,13 @@ Before we could start to train models on our data we created a general model usi
 
 - **Coordination:** For upcoming tasks we will consider how to organize and distribute the work among ourselves to become more time-efficient as a group.
 
+- **Frames** 
+
+- **Augment data**
+
+- **Normilising data**
+
+- **Increase K possibly**
 
 
 ## Software Development
@@ -61,43 +68,60 @@ Overall, this makes the system easy to use, update, and improve without needing 
 
 ## Champion Model (as of now)
 ### Configuration
-**Hidden layers and layer widths:** [512, 256, 128, 64]
 
-**Learning rate:** 0.0001
+
+**Hidden layers and layer widths:** [256, 128, 128, 64, 64] Dense
+
+**Learning rate:** 0.0005
 
 **Dropout:** 0
 
-**Activation:** leaky_relu
+**Activation:** ReLU()
 
 **Optimizer:** Adam
 
 **Epochs:** 100
 
-**Patience:** 5
+**Patience:** 0
+
+**batch_size:** 64
+
 
 ### Metrics
 
+
 | Metric | Train | Test |
 |------|------|------|
-| MSE | 0.006831 | 0.007428 |
-| MAE | 0.062108 | 0.067265 |
-| R2  | 0.308607 | 0.125973 |
-| Bias| -0.001282| 0.006515 |
+| MSE | 0.001342 | 0.00219  |
+| MAE | 0.018342 | 0.025069 |
+| R2  | 0.857105 | 0.83527  |
 
 
 ### Joint accuracy
-| Joint | MAE |
-|-------|-----|
-|head   |0.066032 |
-|left_shoulder|0.062770 |
-|left_elbow|0.058453 |
-|right_shoulder|0.064571|
-|right_elbow|0.074379 |
-|left_hand|0.076375 |
-|right_hand|0.094182 |
-|left_hip|0.069719 |
-|right_hip|0.076804 |
-|left_knee|0.056279 |
-|right_knee|0.063206 |
-|left_foot|0.059430 |
-|right_foot|0.052247 |
+MAE per joint:
+
+head: 0.049005  
+
+left_shoulder: 0.042374 
+
+left_elbow: 0.047464    
+
+right_shoulder: 0.047557
+
+right_elbow: 0.057517
+
+left_hand: 0.054553
+
+right_hand: 0.063952
+
+left_hip: 0.042433
+
+right_hip: 0.043787
+
+left_knee: 0.041827
+
+right_knee: 0.052065
+
+left_foot: 0.041921
+
+right_foot: 0.048905
