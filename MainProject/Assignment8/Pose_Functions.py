@@ -72,6 +72,7 @@ def extract_joint_nodes(data_path: str, model_path: str):
 
         with vision.PoseLandmarker.create_from_options(options) as landmarker:
             cap = cv2.VideoCapture(data_path)
+            
             if not cap.isOpened():
                 raise ValueError(f"Could not open video: {data_path}")
 
