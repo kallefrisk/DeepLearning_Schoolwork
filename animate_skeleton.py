@@ -173,6 +173,14 @@ def main():
     # For demonstration with your provided data:
     df = pd.read_csv('MainProject/Assignment9/data/kinect_good_preprocessed/A1_kinect.csv')
     df = df.rename(columns={" head_x": "head_x"})
+
+    for axis in ("_x", "_y", "_z"):
+        left_hip = df[f"left_hip{axis}"]
+        right_hip = df[f"right_hip{axis}"]
+        hip_mid = (left_hip + right_hip) / 2
+        axis_cols = [c for c in df.columns if c.endswith(axis)]
+        for col in axis_cols:
+            df[col] -= hip_mid
     
     print(f"Loaded {len(df)} frames of skeleton data")
     
