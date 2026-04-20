@@ -3,6 +3,7 @@ import torch
 import torch.nn as nn
 import mlflow
 from itertools import product
+from sklearn.preprocessing import StandardScaler
 from assignment9_functions import split_csvfiles, load, input_target_split, cross_validation, build_model, train_one_model, save_champion_model, update_champion
 
 print()
@@ -43,17 +44,23 @@ x_train, y_train = input_target_split(train_data)
 x_test, y_test = input_target_split(test_data)
 
 
+# Normalize input data based on training data
+scaler = StandardScaler()
+scaler.set_output(transform="pandas")
+x_train_scaled = scaler.fit_transform(x_train)
+x_test_scaled = scaler.transform(x_test)
+
 # Define paths
 champion_dir = "MainProject/models/champion"
 metadata_dir = "MainProject/models/metadata"
 
 
 # Convert data to tensors
-X_train = torch.tensor(x_train.values, dtype=torch.float32).to(device)
+X_train = torch.tensor(x_train_scaled.values, dtype=torch.float32).to(device)
 y_train = torch.tensor(y_train.values, dtype=torch.float32).to(device)
 # X_val = torch.tensor(x_val.values, dtype=torch.float32).to(device)
 # y_val = torch.tensor(y_val.values, dtype=torch.float32).to(device)
-X_test = torch.tensor(x_test.values, dtype=torch.float32).to(device)
+X_test = torch.tensor(x_test_scaled.values, dtype=torch.float32).to(device)
 y_test = torch.tensor(y_test.values, dtype=torch.float32).to(device)
 
 
@@ -91,7 +98,7 @@ for values in product(param_grid["hidden_layers"], param_grid["learning_rate"],
     print(f"\nTrial {trial}")
     print(config)
 
-    results = cross_validation(config, X_train, y_train, 5, device)
+    results = cross_validation(config, X_train, y_train, 18, device)
     cv_score = results["cv_mean_loss"]
     print(f"CV mean validation loss: {cv_score}")
 
