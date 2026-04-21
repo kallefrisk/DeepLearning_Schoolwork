@@ -1,17 +1,17 @@
 {
   "model_name": "BATMAN",
-  "saved_at": "2026-04-15 06:52:10",
-  "mse": 0.0022096140310168266,
-  "mae": 0.03504384309053421,
+  "saved_at": "2026-04-21 14:17:49",
+  "mse": 0.0015657976036891341,
+  "mae": 0.02967788651585579,
   "hyperparameters": {
     "hidden_layers": [
+      512,
       256,
-      128,
-      64
+      128
     ],
     "learning_rate": 0.001,
     "dropout": 0,
-    "activation": "relu",
+    "activation": "tanh",
     "optimizer": "adam",
     "epochs": 500,
     "patience": 5
