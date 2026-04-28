@@ -1,0 +1,19 @@
+{
+  "model_name": "final_model",
+  "saved_at": "2026-04-27 22:14:37",
+  "f1": 0.9240458015267176,
+  "recall": 0.9742454728370221,
+  "precision": 0.8787658802177858,
+  "hyperparameters": {
+    "layers": [
+      256,
+      128,
+      32
+    ],
+    "lr": 0.005,
+    "dropout": 0.1,
+    "activation": "relu",
+    "epochs": 300,
+    "input_size": 39
+  }
+}

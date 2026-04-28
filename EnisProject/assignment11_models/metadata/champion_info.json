@@ -1,0 +1,24 @@
+{
+  "model_name": "regulised_movement_classifier_lstm",
+  "model_path": "../assignment11_models/champion/champion_model.pt",
+  "f1": 0.9296037296037296,
+  "saved_at": "2026-04-27 21:56:32",
+  "params": {
+    "hidden_layers": [
+      256,
+      128,
+      128,
+      64,
+      64
+    ],
+    "layer_type": "LSTM",
+    "dropout": 0.4,
+    "learning_rate": 0.0005,
+    "batch_size": 64,
+    "epochs": 500,
+    "seq_length": 30,
+    "stride": 15,
+    "weight_decay": 1e-05,
+    "run_name": "regulised_movement_classifier_lstm"
+  }
+}

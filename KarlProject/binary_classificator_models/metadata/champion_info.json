@@ -1,0 +1,18 @@
+{
+  "model_name": "trial_4",
+  "saved_at": "2026-04-27 17:43:25",
+  "f1": 0.9383326988960792,
+  "recall": 0.9919517102615694,
+  "precision": 0.8902130733116649,
+  "hyperparameters": {
+    "layers": [
+      128,
+      64
+    ],
+    "lr": 0.001,
+    "dropout": 0.1,
+    "activation": "relu",
+    "epochs": 100,
+    "input_size": 39
+  }
+}
