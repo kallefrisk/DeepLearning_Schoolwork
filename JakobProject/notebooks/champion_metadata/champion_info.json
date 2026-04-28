@@ -1,0 +1,29 @@
+{
+  "model_name": "lstm_cv",
+  "saved_at": "2026-04-28 22:58:29",
+  "f1": 0.9375,
+  "recall": 0.9064612057312788,
+  "precision": 0.9303551609322974,
+  "hyperparameters": {
+    "hidden_layers": [
+      160,
+      160,
+      64
+    ],
+    "layer_type": "LSTM",
+    "dropout": 0.4,
+    "learning_rate": 0.0005,
+    "batch_size": 32,
+    "seq_length": 30,
+    "stride": 30,
+    "weight_decay": 1e-06
+  },
+  "test_results": {
+    "f1": 0.895628078817734,
+    "accuracy": 0.8758241758241758,
+    "precision": 0.8772617611580217,
+    "recall": 0.9147798742138364,
+    "auc": 0.9539372310493214,
+    "evaluated_at": "2026-04-28 23:01:18"
+  }
+}

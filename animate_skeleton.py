@@ -171,7 +171,8 @@ def main():
     # df = read_skeleton_data('your_skeleton_data.csv')
     
     # For demonstration with your provided data:
-    df = pd.read_csv("MainProject/Assignment9/data/kinect_good_preprocessed/A1_kinect.csv")
+   
+    df = pd.read_csv("DeepLearning_Schoolwork/MainProject/Assignment11/data/kinect_good_preprocessed_not_cut_start_stop/A56_kinect.csv")
     df = df.rename(columns={" head_x": "head_x"})
 
     for axis in ("_x", "_y", "_z"):
