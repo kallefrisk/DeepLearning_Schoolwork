@@ -66,7 +66,7 @@ def plot_skeleton(ax, joints, color='blue', alpha=1.0):
 
 def create_skeleton_animation(df, save_folder, output_file='skeleton_animation.gif'):
     """Create animated 3D skeleton visualization"""
-    
+
     # Create figure and 3D axis
     fig = plt.figure(figsize=(12, 8))
     ax = fig.add_subplot(111, projection='3d')
@@ -191,8 +191,10 @@ def animate(path: str, save_folder_path: str = "./plots"):
     
     # Option 2: Create animated visualization
     print("\nCreating animation...")
+
+    out_path = path.split(sep='/')[-1].split(sep='.')[0] + '.gif'
     try:
-        anim = create_skeleton_animation(df, save_folder=save_folder_path, output_file='skeleton_animation.gif')
+        anim = create_skeleton_animation(df, save_folder=save_folder_path, output_file=out_path)
         print("Animation created successfully!")
     except Exception as e:
         print(f"Could not create animation: {e}")
