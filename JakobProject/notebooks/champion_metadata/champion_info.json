@@ -1,29 +1,32 @@
 {
-  "model_name": "lstm_cv",
-  "saved_at": "2026-04-28 22:58:29",
-  "f1": 0.9375,
-  "recall": 0.9064612057312788,
-  "precision": 0.9303551609322974,
+  "model_name": "final_model",
+  "saved_at": "2026-05-04 17:01:55",
+  "f1": 0.9558196221815966,
+  "recall": 0.9792924037460978,
+  "precision": 0.9334457448918865,
   "hyperparameters": {
     "hidden_layers": [
-      160,
-      160,
-      64
+      64,
+      32
     ],
-    "layer_type": "LSTM",
-    "dropout": 0.4,
-    "learning_rate": 0.0005,
-    "batch_size": 32,
+    "dropout": 0.2,
     "seq_length": 30,
-    "stride": 30,
-    "weight_decay": 1e-06
+    "stride": 10,
+    "epochs": 35,
+    "lr": 0.0008,
+    "batch_size": 32,
+    "train_videos": 149,
+    "test_videos": 26,
+    "train_sequences": 5670,
+    "test_sequences": 470,
+    "mirror_augmentation": true
   },
   "test_results": {
-    "f1": 0.895628078817734,
-    "accuracy": 0.8758241758241758,
-    "precision": 0.8772617611580217,
-    "recall": 0.9147798742138364,
-    "auc": 0.9539372310493214,
-    "evaluated_at": "2026-04-28 23:01:18"
+    "f1": 0.9558196221815966,
+    "accuracy": 0.9382978723404255,
+    "precision": 0.9334457448918865,
+    "recall": 0.9792924037460978,
+    "auc": 0.9741867347719176,
+    "evaluated_at": "2026-05-04 17:01:55"
   }
 }
