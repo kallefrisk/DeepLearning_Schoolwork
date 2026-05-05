@@ -1,9 +1,9 @@
 {
   "model_name": "final_model",
-  "saved_at": "2026-05-04 17:01:55",
-  "f1": 0.9558196221815966,
-  "recall": 0.9792924037460978,
-  "precision": 0.9334457448918865,
+  "saved_at": "2026-05-05 11:44:43",
+  "f1": 0.9516162029459901,
+  "recall": 0.968054110301769,
+  "precision": 0.9357272178636089,
   "hyperparameters": {
     "hidden_layers": [
       64,
@@ -19,14 +19,15 @@
     "test_videos": 26,
     "train_sequences": 5670,
     "test_sequences": 470,
-    "mirror_augmentation": true
+    "mirror_augmentation": true,
+    "scaler": "StandardScaler"
   },
   "test_results": {
-    "f1": 0.9534600142261965,
-    "accuracy": 0.9350354609929078,
-    "precision": 0.93159253375695,
-    "recall": 0.9763787721123829,
-    "auc": 0.974600650306265,
-    "evaluated_at": "2026-05-04 21:37:52"
+    "f1": 0.9516162029459901,
+    "accuracy": 0.9329078014184398,
+    "precision": 0.9357272178636089,
+    "recall": 0.968054110301769,
+    "auc": 0.9780530905770483,
+    "evaluated_at": "2026-05-05 11:44:43"
   }
 }
