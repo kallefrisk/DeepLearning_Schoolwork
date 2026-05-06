@@ -17,7 +17,12 @@ def get_joint_positions(row):
         y = row[f"{joint}_y"]
         z = row[f"{joint}_z"]
 
-        joints[joint] = np.array([x, y, z])
+        # Make the animation stand up
+        new_x = z
+        new_y = y
+        new_z = -x
+
+        joints[joint] = np.array([new_x, new_y, new_z])
 
     return joints
 
@@ -97,9 +102,9 @@ def create_skeleton_animation(df):
 
         plot_skeleton(ax, joints, color="red", alpha=1.0)
 
-        ax.set_xlabel("X (m)")
-        ax.set_ylabel("Y (m)")
-        ax.set_zlabel("Z (m)")
+        ax.set_xlabel("Depth (m)")
+        ax.set_ylabel("width (m)")
+        ax.set_zlabel("Height (m)")
         ax.set_title(f"Skeleton Pose - Frame {frame}")
 
         ax.set_xlim([x_min - padding * x_range, x_max + padding * x_range])
