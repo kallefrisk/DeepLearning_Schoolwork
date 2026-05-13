@@ -1,0 +1,18 @@
+{
+  "model_name": "squat_classifier_dense",
+  "saved_at": "2026-05-13 08:54:59",
+  "auc": 0.9786324786324787,
+  "recall": 1.0,
+  "precision": 0.9,
+  "accuracy": 0.9354838709677419,
+  "hyperparameters": {
+    "layers": [
+      64,
+      32
+    ],
+    "lr": 0.001,
+    "dropout": 0,
+    "activation": "leaky_relu",
+    "epochs": 100
+  }
+}
