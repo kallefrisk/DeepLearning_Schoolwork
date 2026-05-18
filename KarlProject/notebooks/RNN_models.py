@@ -32,7 +32,7 @@ class SimpleRNNModel(nn.Module):
 
         output = self.fc(last_out)
         return output
-    
+
     def to_string(self):
         return "SimpleRNNModel"
 
@@ -68,7 +68,7 @@ class LSTMModel(nn.Module):
 
         output = self.fc(last_out)
         return output
-    
+
     def to_string(self):
         return "LSTMModel"
 
@@ -103,6 +103,6 @@ class GRUModel(nn.Module):
 
         output = self.fc(last_out)
         return output
-    
+
     def to_string(self):
         return "GRUModel"
