@@ -1,0 +1,13 @@
+{
+  "model_name": "squat_classifier_cnn",
+  "saved_at": "2026-05-18 18:55:59",
+  "auc": 0.9494949494949495,
+  "recall": 0.9090909090909091,
+  "precision": 0.9090909090909091,
+  "accuracy": 0.8709677419354839,
+  "hyperparameters": {
+    "lr": 0.001,
+    "dropout": 0.1,
+    "epochs": 50
+  }
+}
