@@ -24,7 +24,7 @@ class SimpleRNNModel(nn.Module):
             out shape:
         """
 
-        h0 = torch.zeros(self.num_layers, x.shape[0], self.hidden_size).to(x.device)
+        h0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size).to(x.device)
 
         out, hn = self.rnn(x, h0)
 
@@ -56,8 +56,8 @@ class LSTMModel(nn.Module):
             out_shape:
         """
 
-        h0 = torch.zeros(self.num_layers, x.shape[0], self.hidden_size).to(x.device)
-        c0 = torch.zeros(self.num_layers, x.shape[0], self.hidden_size).to(x.device)
+        h0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size).to(x.device)
+        c0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size).to(x.device)
 
         out, _ = self.lstm(x, (h0, c0))
 
@@ -89,7 +89,7 @@ class GRUModel(nn.Module):
             out_shape:
         """
 
-        h0 = torch.zeros(self.num_layers, x.shape[0], self.hidden_size).to(x.device)
+        h0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size).to(x.device)
 
         out, _ = self.gru(x, h0)
 
