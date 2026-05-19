@@ -1,0 +1,17 @@
+{
+  "model_name": "recording_classifier_dense",
+  "saved_at": "2026-05-19 23:13:13",
+  "auc": 1.0,
+  "recall": 1.0,
+  "precision": 1.0,
+  "accuracy": 1.0,
+  "hyperparameters": {
+    "layers": [
+      16
+    ],
+    "lr": 0.001,
+    "dropout": 0.1,
+    "activation": "relu",
+    "epochs": 50
+  }
+}
