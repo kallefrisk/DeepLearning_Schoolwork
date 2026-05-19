@@ -1,10 +1,10 @@
 {
   "model_name": "recording_classifier_dense",
-  "saved_at": "2026-05-19 23:13:13",
-  "auc": 1.0,
+  "saved_at": "2026-05-19 23:23:45",
+  "auc": 0.9254901960784314,
   "recall": 1.0,
-  "precision": 1.0,
-  "accuracy": 1.0,
+  "precision": 0.9622641509433962,
+  "accuracy": 0.9672131147540983,
   "hyperparameters": {
     "layers": [
       16
