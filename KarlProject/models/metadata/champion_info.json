@@ -1,0 +1,18 @@
+{
+  "model_name": "Trial_44",
+  "saved_at": "2026-04-13 17:34:14",
+  "mse": 0.0030513093806803226,
+  "mae": 0.041911862790584564,
+  "hyperparameters": {
+    "layers": [
+      512,
+      256,
+      128,
+      64
+    ],
+    "learning_rate": 0.0005,
+    "dropout": 0,
+    "activation": "LeakyReLU",
+    "epochs": 100
+  }
+}

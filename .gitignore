@@ -213,6 +213,6 @@ mlartifacts
 
 # misc.
 models/.DS_Store
-KarlProject/models
+test.*
 
 .DS_store
