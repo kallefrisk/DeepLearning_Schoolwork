@@ -1,4 +1,5 @@
 import pandas as pd
+import torch
 from sklearn.preprocessing import MinMaxScaler
 
 
@@ -34,10 +35,29 @@ def load_video_score(score_path: str = None, lower_bound: float = 0, upper_bound
         raise Exception(f"File has no column named '{column}'")
 
 
+def create_sequence_from_dataframe(data: pd.DataFrame) -> torch.Tensor:
+
+    """
+    Converts the input pandas DataFrame into a pytorch Tensor with eventual label to identify
+
+    data_shape: (c, n)
+
+    Args:
+        data: The pandas DataFrame to convert
+    Returns:
+        Tensor: The data in tensor format
+    """
+
+    c, n = data.shape
+    input_data = torch.tensor(data.to_numpy(), dtype=torch.float32)
+    return input_data
+
+
 # Test if the functions work
 def main():
     path = "MainProject/data/video_scores.csv"
-    print(load_video_score(path))
+    df = load_video_score(path)
+    print(create_sequence_from_dataframe(df[["score", "scaled_score"]]))
 
 
 if __name__ == "__main__":
