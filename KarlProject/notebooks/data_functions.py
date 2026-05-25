@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import os
 import torch
 from torch.utils.data import DataLoader, TensorDataset
 from sklearn.preprocessing import MinMaxScaler
@@ -32,6 +33,7 @@ def load_video_score(score_path: str = None, lower_bound: float = 0, upper_bound
         ]
 
     df = df.loc[~df["file"].isin(bad_videos)]
+
     for column in columns:
         if column in df.columns:
             if column == "score":
@@ -99,11 +101,35 @@ def create_TensorDataset(sequences: torch.Tensor, labels: torch.Tensor, batch_si
 
 
 def main():
-    path = "MainProject/data/mediapipe_not_trimmed_world/A1_mediapipe.csv"
-    df = pd.read_csv(path).drop(columns=["FrameNo"])
-    print(df.shape)
-    df_sliced = select_equally_spaced_rows(df)
-    print(df_sliced.shape)
+    folder_path = "MainProject/data/mediapipe_not_trimmed_world"
+    score_path = "MainProject/data/video_scores.csv"
+
+    scores = load_video_score(score_path=score_path)
+
+    files = list(scores["file"])
+
+    labels = torch.tensor(list(scores["scaled_score"]))
+
+    samples = []
+    for file in files:
+        path = os.path.join(folder_path, f"{file}_mediapipe.csv")
+
+        # Select frames from the file
+        df = pd.read_csv(path).drop(columns=["FrameNo"])
+        df_sliced = select_equally_spaced_rows(df)
+
+        # Convert to tensors
+        sample = create_tensor_from_dataframe(df_sliced)
+        samples.append(sample)
+
+    print(len(samples))
+    samples = torch.stack(samples)
+    print(samples.shape)
+    data = create_TensorDataset(samples, labels)
+    if data is not None:
+        print("Successfully created DataLoader!")
+    else:
+        print("Something went wrong!")
 
 
 if __name__ == "__main__":
