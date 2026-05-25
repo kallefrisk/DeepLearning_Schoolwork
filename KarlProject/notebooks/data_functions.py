@@ -97,3 +97,23 @@ def create_TensorDataset(sequences: torch.Tensor, labels: torch.Tensor, batch_si
     tensor_data = TensorDataset(sequences, labels)
     dataloader = DataLoader(tensor_data, batch_size=batch_size, shuffle=True, drop_last=False)
     return dataloader
+
+
+def extend_tensor(data: torch.Tensor, n: int = 2) -> torch.Tensor:
+    """
+    Returns a copy of the inpyt tensor with each element in the first dimension copied n times
+
+    Shape (c, ...) -> (c*n, ...)
+
+    Args:
+        data: The tensor to be extended
+        n: The number of copies of each element to extend by
+
+    Returns:
+        Tensor: The extended tensor
+    """
+    new_data = []
+    for entry in data:
+        for _ in range(n):
+            new_data.append(entry)
+    return torch.stack(new_data)
