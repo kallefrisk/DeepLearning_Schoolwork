@@ -5,10 +5,10 @@ def angle(point1, point2, point3):
     """
     Compute the angle between three points (in degrees).
     point2 is the vertex of the angle.
-    
+
     Parameters:
     point1, point2, point3: tuples or lists of (x, y, z) coordinates
-    
+
     Returns:
     angle in degrees
     """
@@ -16,46 +16,46 @@ def angle(point1, point2, point3):
     p1 = np.array([point1[0], point1[1], point1[2]])
     p2 = np.array([point2[0], point2[1], point2[2]])
     p3 = np.array([point3[0], point3[1], point3[2]])
-    
+
     # Vectors from the vertex
     v1 = p1 - p2
     v2 = p3 - p2
-    
+
     # Calculate the cosine of the angle using dot product
     cos_angle = np.dot(v1, v2) / (np.linalg.norm(v1) * np.linalg.norm(v2))
-    
+
     # Clip to avoid numerical issues
     cos_angle = np.clip(cos_angle, -1.0, 1.0)
-    
+
     # Convert to degrees
     angle_rad = np.arccos(cos_angle)
     angle_deg = np.degrees(angle_rad)
-    
+
     return angle_deg
 
 
 def compute_angles(df):
     """
     Compute angles between different joints and append them to the dataframe.
-    
+
     Parameters:
     df: pandas DataFrame with joint coordinates
-    
+
     Returns:
     DataFrame with angle columns appended before the last column
     """
     # Create a copy of the dataframe to avoid modifying the original
     df_copy = df.copy()
-    
+
     # Dictionary to store computed angles
     angles_dict = {}
-    
+
     # For each row, compute angles
     for idx, row in df.iterrows():
         # Get coordinates for each joint
         # Format: joint_x, joint_y, joint_z
         joints = {}
-        
+
         # Extract all joints (matching the column names in your data)
         column_groups = {
             'head': ['head_x', 'head_y', 'head_z'],
@@ -72,11 +72,11 @@ def compute_angles(df):
             'left_foot': ['left_foot_x', 'left_foot_y', 'left_foot_z'],
             'right_foot': ['right_foot_x', 'right_foot_y', 'right_foot_z']
         }
-        
+
         for joint_name, coord_cols in column_groups.items():
             if all(col in row.index for col in coord_cols):
                 joints[joint_name] = (row[coord_cols[0]], row[coord_cols[1]], row[coord_cols[2]])
-        
+
         # Define angle definitions (joint1, vertex, joint2)
         angle_definitions = {
             'left_elbow_angle': ('left_shoulder', 'left_elbow', 'left_hand'),
@@ -88,7 +88,7 @@ def compute_angles(df):
             'left_hip_angle': ('left_shoulder', 'left_hip', 'left_knee'),
             'right_hip_angle': ('right_shoulder', 'right_hip', 'right_knee')
         }
-        
+
         # Compute each angle if all required joints exist
         for angle_name, (joint1, vertex, joint2) in angle_definitions.items():
             if all(j in joints for j in [joint1, vertex, joint2]):
@@ -97,22 +97,22 @@ def compute_angles(df):
                 )
             else:
                 angles_dict.setdefault(angle_name, []).append(np.nan)
-    
+
     # Add angle columns to the result dataframe
     for angle_name, angle_values in angles_dict.items():
         df_copy[angle_name] = angle_values
-    
+
     # Reorder columns: keep original columns except move 'running_video' to the end
     original_columns = [col for col in df_copy.columns if col != 'running_video' and col not in angles_dict]
     angle_columns = list(angles_dict.keys())
     final_columns = original_columns + angle_columns + ['running_video']
-    
+
     df_copy = df_copy[final_columns]
-    
+
     return df_copy
 
 
-def mirror(df:pd.DataFrame, mirror_x: bool = True, mirror_y: bool = True, mirror_z: bool = True) -> pd.DataFrame:
+def mirror(df: pd.DataFrame, mirror_x: bool = True, mirror_y: bool = True, mirror_z: bool = True) -> pd.DataFrame:
     '''
     Flips the node coordinates of the input kinect DataFrame.
 
@@ -133,7 +133,7 @@ def mirror(df:pd.DataFrame, mirror_x: bool = True, mirror_y: bool = True, mirror
         (5, 6),   # hands
         (7, 8),   # hips
         (9, 10),  # knees
-        (11, 12), # feet
+        (11, 12)  # feet
     ]
 
     df_copy = df.copy()
@@ -192,7 +192,7 @@ def rotate(df: pd.DataFrame, rotation: float = 0.0, axis: int = 0):
                 x_col = f"{bodypart}_x"
                 y_col = f"{bodypart}_y"
                 z_col = f"{bodypart}_z"
-                
+
                 # Check if all columns exist
                 if all(col in df_copy.columns for col in [x_col, y_col, z_col]):
                     # Apply 2D rotation
@@ -202,27 +202,27 @@ def rotate(df: pd.DataFrame, rotation: float = 0.0, axis: int = 0):
                         t_col = np.arctan(df_copy[y_col]/df_copy[x_col])
 
                         t_col = t_col + rotation
-                        
+
                         df_copy[x_col] = r_col * np.cos(t_col)
                         df_copy[y_col] = r_col * np.sin(t_col)
-                    
+
                     # Rotation around y-axis
                     elif axis == 1:
                         r_col = np.sqrt(df_copy[x_col]**2 + df_copy[z_col]**2)
                         t_col = np.arctan(df_copy[z_col]/df_copy[x_col])
 
                         t_col = t_col + rotation
-                        
+
                         df_copy[x_col] = r_col * np.cos(t_col)
                         df_copy[z_col] = r_col * np.sin(t_col)
-                    
+
                     # Rotation around x-axis
                     else:
                         r_col = np.sqrt(df_copy[z_col]**2 + df_copy[y_col]**2)
                         t_col = np.arctan(df_copy[y_col]/df_copy[z_col])
 
                         t_col = t_col + rotation
-                        
+
                         df_copy[z_col] = r_col * np.cos(t_col)
                         df_copy[y_col] = r_col * np.sin(t_col)
 
@@ -239,6 +239,7 @@ def main():
     # print(df.head()[["left_foot_x", "right_foot_x"]])
     # print(mirror(df).head()[["left_foot_x", "right_foot_x"]])
     print(rotate(df, 0.5).head())
+
 
 if __name__ == "__main__":
     main()
