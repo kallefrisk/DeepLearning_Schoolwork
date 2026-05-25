@@ -190,7 +190,7 @@ def load_folder_with_split(
                 df = select_equally_spaced_rows(df, num_rows=num_rows)
 
             all_files.append(df)
-            target = scores["scaled_score"].loc[scores["file"] == file_name]
+            target = scores["scaled_score"].loc[scores["file"] == file_name].values[0]
             all_targets.append(target)
 
     X_train, X_test, Y_train, Y_test = train_test_split(all_files, all_targets, test_size=test_size, random_state=random_state)
