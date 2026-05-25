@@ -27,6 +27,16 @@ def load_video_score(score_path: str = None, lower_bound: float = 0, upper_bound
 
     df = pd.read_csv(score_path)
 
+    bad_videos = [
+        "A1",
+        "B2",
+        "B3",
+        "B4",
+        "B5"
+        ]
+
+    df = df.loc[~df["file"].isin(bad_videos)]
+
     for column in columns:
         if column in df.columns:
             if column == "score":
@@ -40,10 +50,10 @@ def load_video_score(score_path: str = None, lower_bound: float = 0, upper_bound
         raise Exception(f"File has no column named '{column}'")
 
 
-def create_sequence_from_dataframe(data: pd.DataFrame) -> torch.Tensor:
+def create_tensor_from_dataframe(data: pd.DataFrame) -> torch.Tensor:
 
     """
-    Converts the input pandas DataFrame into a pytorch Tensor with eventual label to identify
+    Converts the input pandas DataFrame into a pytorch Tensor
 
     data_shape: (c, n)
 
@@ -52,7 +62,6 @@ def create_sequence_from_dataframe(data: pd.DataFrame) -> torch.Tensor:
     Returns:
         Tensor: The data in tensor format
     """
-    c, n = data.shape
     input_data = torch.tensor(data.to_numpy(), dtype=torch.float32)
     return input_data
 
