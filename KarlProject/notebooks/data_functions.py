@@ -101,7 +101,7 @@ def create_TensorDataset(sequences: torch.Tensor, labels: torch.Tensor, batch_si
 
 def extend_tensor(data: torch.Tensor, n: int = 2) -> torch.Tensor:
     """
-    Returns a copy of the inpyt tensor with each element in the first dimension copied n times
+    Returns a copy of the input tensor with each element in the first dimension copied n times
 
     Shape (c, ...) -> (c*n, ...)
 
