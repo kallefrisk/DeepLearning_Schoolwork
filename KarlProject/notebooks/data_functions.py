@@ -1,5 +1,7 @@
 import pandas as pd
 import numpy as np
+import torch
+from torch.utils.data import DataLoader, TensorDataset
 from sklearn.preprocessing import MinMaxScaler
 
 
@@ -71,6 +73,29 @@ def select_equally_spaced_rows(data: pd.DataFrame, num_frames: int = 30):
         mask[index] = True
 
     return df[mask]
+
+
+def create_tensor_from_dataframe(data: pd.DataFrame) -> torch.Tensor:
+
+    """
+    Converts the input pandas DataFrame into a pytorch Tensor
+
+    data_shape: (c, n)
+
+    Args:
+        data: The pandas DataFrame to convert
+    Returns:
+        Tensor: The data in tensor format
+    """
+    input_data = torch.tensor(data.to_numpy(), dtype=torch.float32)
+    return input_data
+
+
+def create_TensorDataset(sequences: torch.Tensor, labels: torch.Tensor, batch_size: int = 32) -> TensorDataset:
+    """Create a DataLoader using a tensor of sequences with an equally sized label tensor."""
+    tensor_data = TensorDataset(sequences, labels)
+    dataloader = DataLoader(tensor_data, batch_size=batch_size, shuffle=True, drop_last=False)
+    return dataloader
 
 
 def main():
