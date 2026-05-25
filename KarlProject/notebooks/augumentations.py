@@ -112,7 +112,7 @@ def compute_angles(df):
     return df_copy
 
 
-def mirror(df: pd.DataFrame, mirror_x: bool = True, mirror_y: bool = True, mirror_z: bool = True) -> pd.DataFrame:
+def mirror(df: pd.DataFrame, axis: tuple[bool, bool, bool] = (True, False, False)) -> pd.DataFrame:
     '''
     Flips the node coordinates of the input kinect DataFrame.
 
@@ -120,9 +120,7 @@ def mirror(df: pd.DataFrame, mirror_x: bool = True, mirror_y: bool = True, mirro
 
     Args:
         X: Input DataFrame
-        flip_x: If the x-coordinate should be flipped
-        flip_y: If the y-coordinate should be flipped
-        flip_z: If the z-coordinate should be flipped
+        axis: The axis to rotate (x-axis, y-axis, z-axis)
 
     Returns:
         Copy of the original DataFrame with flipped coordinates
@@ -143,13 +141,13 @@ def mirror(df: pd.DataFrame, mirror_x: bool = True, mirror_y: bool = True, mirro
         x_idx_right, y_idx_right, z_idx_right = right * 3, right * 3 + 1, right * 3 + 2
 
         # Swap left with right and vice verse
-        if mirror_x:
+        if axis[0]:
             df_copy[df_copy.columns[x_idx_left]], df_copy[df_copy.columns[x_idx_right]] = \
                 df_copy[df_copy.columns[x_idx_right]], df_copy[df_copy.columns[x_idx_left]]
-        if mirror_y:
+        if axis[1]:
             df_copy[df_copy.columns[y_idx_left]], df_copy[df_copy.columns[y_idx_right]] = \
                 df_copy[df_copy.columns[y_idx_right]], df_copy[df_copy.columns[y_idx_left]]
-        if mirror_z:
+        if axis[2]:
             df_copy[df_copy.columns[z_idx_left]], df_copy[df_copy.columns[z_idx_right]] = \
                 df_copy[df_copy.columns[z_idx_right]], df_copy[df_copy.columns[z_idx_left]]
 
