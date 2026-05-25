@@ -230,7 +230,7 @@ def augument_data(
 
                 # Standardize the data
                 scaler = StandardScaler()
-                sample = torch.tensor(scaler.fit_transform(rotated_data))
+                sample = torch.tensor(scaler.fit_transform(rotated_data), dtype=torch.float32)
 
                 # Convert to tensors
                 samples.append(sample)
