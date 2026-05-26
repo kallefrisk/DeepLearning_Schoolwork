@@ -245,3 +245,38 @@ def augument_data(
                 samples.append(sample)
 
     return torch.stack(samples)
+
+
+def create_sequences_from_dataframes(
+        X_data: pd.DataFrame | list[pd.DataFrame],
+        Y_data: list | list[list],
+        sequence_length: int = 10
+        ) -> tuple[torch.Tensor, torch.Tensor]:
+    """
+    Creates a tensor from a pandas DataFrame and a list of target values for each row of the DataFrame.
+
+    Args:
+        X_data: the DataFrame of shape (c, n)
+        Y_data: the list of length c
+
+    Returns:
+        Tensors: sequence tensor of shape (c - sequence_length, sequence_length, n), target tensor of shape (c - sequence_length, 1)
+    """
+
+    all_sequences = []
+    all_targets = []
+    for i, data in enumerate(X_data):
+        data = torch.tensor(data.to_numpy(), dtype=torch.float32)
+
+        sequences = []
+        for index in range(sequence_length, data.shape[0]):
+            sequence = data[index - sequence_length:index, :]
+            sequences.append(sequence)
+
+        sequences = torch.stack(sequences)
+        targets = torch.tensor(Y_data[i][sequence_length:], dtype=torch.float32)
+
+        all_sequences.append(sequences)
+        all_targets.append(targets)
+
+    return (torch.cat(all_sequences), torch.cat(all_targets))
