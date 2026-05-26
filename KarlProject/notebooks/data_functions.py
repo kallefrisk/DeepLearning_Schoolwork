@@ -141,11 +141,13 @@ def extend_tensor(
 
 def load_folder_with_split(
         folder_path: str,
-        target_path: str,
+        target_path: str = None,
         test_size: float = 0.2,
         random_state: int = 42,
         select_rows: bool = False,
-        num_rows: int = 30
+        num_rows: int = 30,
+        separate_target_file: bool = True,
+        target_column: str = "target"
         ) -> tuple[list, list, list, list]:
     """
     For use with data and target that are in separate files.
@@ -165,8 +167,11 @@ def load_folder_with_split(
         tuple: lists of DataFrames for each file in folder_path (X_train, X_test, Y_train, Y_test)
     """
 
-    scores = load_video_score(target_path)
-    files = list(scores["file"])
+    if separate_target_file and target_path is not None:
+        scores = load_video_score(target_path)
+        files = list(scores["file"])
+    elif separate_target_file and target_path is None:
+        raise Exception("target_path cannot be None if target path is required")
 
     all_files = []
     all_targets = []
@@ -176,7 +181,7 @@ def load_folder_with_split(
         path = os.path.join(folder_path, file)
         file_name = file.split("_")[0]
 
-        if file_name not in files:
+        if separate_target_file and file_name not in files:
             pass
         else:
             # Select frames from the file
@@ -189,8 +194,12 @@ def load_folder_with_split(
             if select_rows:
                 df = select_equally_spaced_rows(df, num_rows=num_rows)
 
-            all_files.append(df)
-            target = scores["scaled_score"].loc[scores["file"] == file_name].values[0]
+            all_files.append(df.drop(columns=[target_column]))
+
+            if separate_target_file:
+                target = scores["scaled_score"].loc[scores["file"] == file_name].values[0]
+            else:
+                target = df[target_column]
             all_targets.append(target)
 
     X_train, X_test, Y_train, Y_test = train_test_split(all_files, all_targets, test_size=test_size, random_state=random_state)
