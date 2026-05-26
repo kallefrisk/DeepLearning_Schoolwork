@@ -1,0 +1,18 @@
+{
+  "model_name": "denseSquatReg",
+  "saved_at": "2026-05-26 10:12:07",
+  "mse": 0.31803345680236816,
+  "mae": 0.4616157114505768,
+  "r2": 0.6307381391525269,
+  "hyperparameters": {
+    "layers": [
+      256,
+      128,
+      64
+    ],
+    "lr": 0.001,
+    "dropout": 0.1,
+    "activation": "relu",
+    "epochs": 100
+  }
+}
