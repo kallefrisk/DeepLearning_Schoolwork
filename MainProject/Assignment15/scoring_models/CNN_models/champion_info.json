@@ -1,0 +1,13 @@
+{
+  "model_name": "SquatRegressorCNN",
+  "saved_at": "2026-05-25 20:21:28",
+  "mse": 0.20128130912780762,
+  "mae": 0.3447914719581604,
+  "r2": 0.6992965936660767,
+  "hyperparameters": {
+    "lr": 0.005,
+    "dropout": 0.25,
+    "epochs": 250,
+    "weight_decay": 0.0001
+  }
+}
