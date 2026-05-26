@@ -6,7 +6,15 @@ from sklearn.model_selection import KFold
 import copy
 
 
-def train_model(params: dict, train_data: torch.Tensor, train_labels: torch.Tensor, device, n_folds: int = 5, classifier: bool = True) -> tuple[nn.Module, dict]:
+def train_model(
+        params: dict,
+        train_data: torch.Tensor,
+        train_labels: torch.Tensor,
+        device,
+        n_folds: int = 5,
+        batch_size: int = 32,
+        classifier: bool = True
+        ) -> tuple[nn.Module, dict]:
     """
     Train model with cross-validation
 
@@ -53,7 +61,8 @@ def train_model(params: dict, train_data: torch.Tensor, train_labels: torch.Tens
         # Train on this fold
         model, fold_stats = train_single_model(
             params, train_x_fold, train_y_fold, device, val_x_fold,
-            val_y_fold, pos_weight, fold_num=fold + 1, classifier=classifier)
+            val_y_fold, pos_weight, batch_size=batch_size,
+            fold_num=fold + 1, classifier=classifier)
 
         fold_results.append(fold_stats)
         fold_models.append(model)
@@ -69,7 +78,8 @@ def train_model(params: dict, train_data: torch.Tensor, train_labels: torch.Tens
     print("\n--- Training final model on all data ---")
     final_model, final_stats = train_single_model(
         params, train_data, train_labels, device,
-        pos_weight, is_final=True, classifier=classifier)
+        pos_weight, batch_size=batch_size,
+        is_final=True, classifier=classifier)
 
     results['final_model'] = final_model
     results['final_stats'] = final_stats
@@ -77,10 +87,19 @@ def train_model(params: dict, train_data: torch.Tensor, train_labels: torch.Tens
     return final_model, results
 
 
-def train_single_model(params: dict, train_data: torch.Tensor, train_labels: torch.Tensor, device,
-                       val_data: torch.tensor = None, val_labels: torch.tensor = None,
-                       pos_weight: torch.Tensor = None, fold_num: int = None,
-                       is_final: bool = False, classifier: bool = True) -> tuple[nn.Module, dict]:
+def train_single_model(
+        params: dict,
+        train_data: torch.Tensor,
+        train_labels: torch.Tensor,
+        device,
+        val_data: torch.tensor = None,
+        val_labels: torch.tensor = None,
+        pos_weight: torch.Tensor = None,
+        fold_num: int = None,
+        batch_size: int = 32,
+        is_final: bool = False,
+        classifier: bool = True
+        ) -> tuple[nn.Module, dict]:
     """Train a single model with validation"""
 
     model = params["model_type"](
@@ -97,11 +116,11 @@ def train_single_model(params: dict, train_data: torch.Tensor, train_labels: tor
         loss_func = params["loss_func"]()
 
     train_dataset = TensorDataset(train_data, train_labels)
-    train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True, drop_last=False)
+    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, drop_last=False)
 
     if val_data is not None and val_labels is not None:
         val_dataset = TensorDataset(val_data, val_labels)
-        val_loader = DataLoader(val_dataset, batch_size=32, shuffle=True, drop_last=False)
+        val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=True, drop_last=False)
 
     prev_loss = np.inf
     streak = 0
