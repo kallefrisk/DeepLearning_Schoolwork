@@ -263,10 +263,29 @@ def create_sequences_from_dataframes(
         Tensors: sequence tensor of shape (c - sequence_length, sequence_length, n), target tensor of shape (c - sequence_length, 1)
     """
 
-    all_sequences = []
-    all_targets = []
-    for i, data in enumerate(X_data):
-        data = torch.tensor(data.to_numpy(), dtype=torch.float32)
+    if isinstance(X_data, list):
+
+        all_sequences = []
+        all_targets = []
+        for i, data in enumerate(X_data):
+            data = torch.tensor(data.to_numpy(), dtype=torch.float32)
+
+            sequences = []
+            for index in range(sequence_length, data.shape[0]):
+                sequence = data[index - sequence_length:index, :]
+                sequences.append(sequence)
+
+            sequences = torch.stack(sequences)
+            targets = torch.tensor(Y_data[i][sequence_length:], dtype=torch.float32)
+
+            all_sequences.append(sequences)
+            all_targets.append(targets)
+
+        return (torch.cat(all_sequences), torch.cat(all_targets))
+
+    else:
+
+        data = torch.tensor(X_data.to_numpy(), dtype=torch.float32)
 
         sequences = []
         for index in range(sequence_length, data.shape[0]):
@@ -274,9 +293,6 @@ def create_sequences_from_dataframes(
             sequences.append(sequence)
 
         sequences = torch.stack(sequences)
-        targets = torch.tensor(Y_data[i][sequence_length:], dtype=torch.float32)
+        targets = torch.tensor(Y_data[sequence_length:], dtype=torch.float32)
 
-        all_sequences.append(sequences)
-        all_targets.append(targets)
-
-    return (torch.cat(all_sequences), torch.cat(all_targets))
+        return sequences, targets
