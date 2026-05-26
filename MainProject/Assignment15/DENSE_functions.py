@@ -4,6 +4,20 @@ import torch.nn as nn
 from torch.utils.data import DataLoader, TensorDataset
 from sklearn.model_selection import KFold
 import copy
+import os
+from sklearn.preprocessing import StandardScaler
+import torch.optim as optim
+import pandas as pd
+import random
+from DENSE_model import *
+
+if torch.backends.mps.is_available():
+    device = torch.device("mps")      # Mac GPU (Apple Silicon)
+elif torch.cuda.is_available():
+    device = torch.device("cuda")     # Nvidia GPU
+else:
+    device = torch.device("cpu")
+
 
 def train_one_model(model, config, x_train, y_train, x_val, y_val, loss_fn):
 
@@ -125,3 +139,95 @@ def cross_validate_model(config, X, y, loss_fn, input_size, n_splits=10):
         "mse_std": std_mse,
         "fold_scores": fold_mse_scores
     }
+
+
+def load(files, data_dir):
+    dataframes = []
+
+    for f in files:
+        path = os.path.join(data_dir, f)   
+        df = pd.read_csv(path)
+
+        # Get rid of trailing whitespace
+        df.columns = df.columns.str.strip()           
+        dataframes.append(df)             
+
+    combined = pd.concat(dataframes, ignore_index=True)  # combine all
+
+    return combined
+
+
+
+def split_csvfiles(datafolder, random_seed, training_prop, validation_prop):
+    csv_files = []
+    for f in os.listdir(datafolder):
+        if f.endswith(".csv"):
+            csv_files.append(f)
+
+    random.seed(random_seed)
+    random.shuffle(csv_files)
+
+    train_n = int(len(csv_files) * training_prop)
+    val_n = int(len(csv_files) * validation_prop)
+
+    # Split
+    if validation_prop == 0:
+        train_files = csv_files[:train_n]
+        test_files = csv_files[train_n:]
+
+        return train_files, test_files
+
+    else:
+        train_files = csv_files[:train_n]
+        val_files = csv_files[train_n: train_n + val_n]
+        test_files = csv_files[train_n + val_n:]
+
+        return train_files, val_files, test_files
+
+
+def mirror_dataframe(df, mirror_x=True, mirror_y=True, mirror_z=True):
+    """
+    Mirror pose data by swapping left/right joints.
+
+    Assumes column format: frameX_joint_coord
+    """
+
+    df_copy = df.copy()
+
+    mirror_pairs = [
+        ("left_shoulder", "right_shoulder"),
+        ("left_elbow", "right_elbow"),
+        ("left_hand", "right_hand"),
+        ("left_hip", "right_hip"),
+        ("left_knee", "right_knee"),
+        ("left_foot", "right_foot"),
+    ]
+
+    for col in df.columns:
+        parts = col.split("_")
+
+        # Example: frame0_left_knee_x
+        frame = parts[0]
+        coord = parts[-1]
+        joint = "_".join(parts[1:-1])
+
+        for left, right in mirror_pairs:
+
+            if joint == left:
+                mirrored_col = f"{frame}_{right}_{coord}"
+
+                if mirrored_col in df.columns:
+                    df_copy[col] = df[mirrored_col]
+
+            elif joint == right:
+                mirrored_col = f"{frame}_{left}_{coord}"
+
+                if mirrored_col in df.columns:
+                    df_copy[col] = df[mirrored_col]
+
+    return df_copy
+
+
+def augment_with_noise(X, noise_std=0.005):
+    noise = np.random.normal(0, noise_std, X.shape)
+    return X + noise

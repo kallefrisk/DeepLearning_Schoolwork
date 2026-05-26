@@ -1,4 +1,13 @@
 import torch.nn as nn
+import torch
+
+if torch.backends.mps.is_available():
+    device = torch.device("mps")      # Mac GPU (Apple Silicon)
+elif torch.cuda.is_available():
+    device = torch.device("cuda")     # Nvidia GPU
+else:
+    device = torch.device("cpu")
+
 
 class SquatRegDense(nn.Module):
     def __init__(self, input_dim, hidden_layers: list, activation="relu", dropout=0.0):
