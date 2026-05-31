@@ -137,7 +137,8 @@ def extract_mediapipe_features(video_path, model_path):
 
             image_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-            mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=image_rgb)
+            mp_image = mp.Image(image_format=mp.ImageFormat.SRGB,
+                                data=image_rgb)
 
             timestamp_ms = int((frame_idx / fps) * 1000)
 

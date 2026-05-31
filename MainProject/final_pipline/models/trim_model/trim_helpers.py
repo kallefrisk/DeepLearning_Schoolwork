@@ -52,7 +52,7 @@ def drop_confidence_features(df):
     drop_cols = [
         col for col in df.columns
         if col == "FrameNo"
-        if col.endswith("_visibility")
+        or col.endswith("_visibility")
         or col.endswith("_presence")
         or col == "pose_score"
     ]

@@ -7,7 +7,6 @@ import torch
 CURRENT_DIR = Path(__file__).resolve().parent
 
 if str(CURRENT_DIR) not in sys.path:
-
     sys.path.insert(0, str(CURRENT_DIR))
 
 from .RNN_models import SimpleRNNModel, LSTMModel, GRUModel
@@ -47,6 +46,7 @@ def load_ugly_scaler(scaler_path):
     """
 
     return joblib.load(scaler_path)
+
 
 def prepare_ugly_input(df, scaler, num_start_frames=30, step=3):
     """

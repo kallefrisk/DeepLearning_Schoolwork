@@ -1,10 +1,12 @@
 import torch.nn as nn
 import torch
 
+
 def init_weights(m):
     if isinstance(m, nn.Linear):
         nn.init.kaiming_uniform_(m.weight)
         nn.init.zeros_(m.bias)
+
 
 class SquatClassifierCNN(nn.Module):
     def __init__(self, input_dim, dropout_rate=0.25):
@@ -52,6 +54,7 @@ class SquatClassifierCNN(nn.Module):
         x = self.conv_block3(x)
         x = x.view(x.size(0), -1)
         return self.classifier(x)
+
 
 def build_cnn_model(config, input_dim):
     return SquatClassifierCNN(input_dim=input_dim, dropout_rate=config["dropout"]).to(device)
