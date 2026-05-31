@@ -1,0 +1,32 @@
+{
+  "model_name": "SquatClassifierCNN",
+  "saved_at": "2026-05-04 17:01:55",
+  "f1": 0.9558196221815966,
+  "recall": 0.9792924037460978,
+  "precision": 0.9334457448918865,
+  "hyperparameters": {
+    "hidden_layers": [
+      64,
+      32
+    ],
+    "dropout": 0.2,
+    "seq_length": 30,
+    "stride": 10,
+    "epochs": 35,
+    "lr": 0.0008,
+    "batch_size": 32,
+    "train_videos": 149,
+    "test_videos": 26,
+    "train_sequences": 5670,
+    "test_sequences": 470,
+    "mirror_augmentation": true
+  },
+  "test_results": {
+    "f1": 0.9534600142261965,
+    "accuracy": 0.9350354609929078,
+    "precision": 0.93159253375695,
+    "recall": 0.9763787721123829,
+    "auc": 0.974600650306265,
+    "evaluated_at": "2026-05-04 21:37:52"
+  }
+}

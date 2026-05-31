@@ -3,6 +3,7 @@ os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
 from pathlib import Path
 import torch
+import cv2
 from mediapipe_.mediapipe_helpers import extract_mediapipe_features
 from models.ugly_models.ugly_helpers import load_ugly_model, load_ugly_scaler, predict_ugly
 from models.trim_model.trim_helpers import load_trim_model, load_trim_scaler, drop_confidence_features, trim_sequence
@@ -120,6 +121,59 @@ def choose_video(video_dir):
         return None
 
     return videos[choice - 1]
+
+
+def video_menu(video_path):
+    """
+    Menu shown after selecting a video.
+
+    Returns:
+        "preview"
+        "analyze"
+        "back"
+    """
+
+    print(f"\nSelected: {video_path.name}")
+
+    print("\nP - Preview video")
+    print("A - Analyze video")
+    print("B - Back")
+
+    choice = input("\n").lower().strip()
+
+    if choice == "p":
+        return "preview"
+
+    if choice == "a":
+        return "analyze"
+
+    return "back"
+
+
+def preview_video(video_path):
+    """
+    Plays the selected video.
+    Press Q to close.
+    """
+
+    cap = cv2.VideoCapture(str(video_path))
+
+    while cap.isOpened():
+
+        ret, frame = cap.read()
+
+        if not ret:
+            break
+
+        frame = cv2.resize(frame, (900, 500))
+
+        cv2.imshow("Video Preview", frame)
+
+        if cv2.waitKey(25) & 0xFF == ord("q"):
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
 
 
 def run_pipeline(video_path):
@@ -240,6 +294,7 @@ def run_pipeline(video_path):
 # =========================================
 
 while True:
+
     selected_video = choose_video(VIDEO_DIR)
 
     if selected_video == "exit":
@@ -249,9 +304,24 @@ while True:
     if selected_video is None:
         continue
 
-    try:
-        run_pipeline(selected_video)
-    except Exception as error:
-        print(f"\nUnexpected error: {error}")
+    action = video_menu(selected_video)
 
-    input("\nPress Enter to choose another video...")
+    if action == "back":
+        continue
+
+    if action == "preview":
+
+        preview_video(selected_video)
+
+        input("\nPress Enter to continue...")
+        continue
+
+    if action == "analyze":
+
+        try:
+            run_pipeline(selected_video)
+
+        except Exception as error:
+            print(f"\nUnexpected error: {error}")
+
+        input("\nPress Enter to continue...")
