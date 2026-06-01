@@ -1,5 +1,5 @@
 {
-  "model_name": "SquatClassifierCNN",
+  "model_name": "Recurrent_classifier",
   "saved_at": "2026-05-04 17:01:55",
   "f1": 0.9558196221815966,
   "recall": 0.9792924037460978,
