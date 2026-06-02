@@ -165,8 +165,6 @@ def preview_video(video_path):
         if not ret:
             break
 
-        frame = cv2.resize(frame, (900, 500))
-
         cv2.imshow("Video Preview", frame)
 
         if cv2.waitKey(25) & 0xFF == ord("q"):
